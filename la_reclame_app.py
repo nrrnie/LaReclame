@@ -1,10 +1,20 @@
 from la_reclame import create_app
+from os import getenv
+
+
+app = create_app()
 
 
 def main():
-    app = create_app()
+    host = getenv('HOST')
+    port = getenv('PORT')
+    debug = getenv('DEBUG')
 
-    app.run()
+    if None in [host, port, debug]:
+        print('Host, port or debug values was not set.')
+        exit()
+
+    app.run(host=host, port=port, debug=debug)
 
 
 if __name__ == '__main__':
