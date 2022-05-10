@@ -18,4 +18,7 @@ def create_app():
         db.init_app(app)
         migrate.init_app(app, db)
 
+    from la_reclame.auth import auth
+    app.register_blueprint(auth, url_prefix='/auth')
+
     return app
