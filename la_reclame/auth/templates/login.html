@@ -1,0 +1,19 @@
+{% extends 'auth_template.html' %}
+
+{% block form %}
+<p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Log in</p>
+<form method="POST">
+    <div class="mb-3">
+        <label for="email-input" class="form-label">Email</label>
+        <input type="number" class="form-control" id="email-input" name="email" required>
+    </div>
+    <div class="mb-3">
+        <label for="password-input" class="form-label">Password</label>
+        <input type="password" class="form-control" minlength="8" id="password-input"
+               name="password" required>
+    </div>
+    <a href=""
+       class="d-block text-secondary text-decoration-none mb-3">Don't have an account yet?</a>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
