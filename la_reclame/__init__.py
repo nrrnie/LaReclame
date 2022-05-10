@@ -1,4 +1,5 @@
 from flask import Flask, redirect, url_for
+from flask_session import Session, SqlAlchemySessionInterface
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from config import Config
@@ -6,6 +7,7 @@ from config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
+sess = Session()
 
 
 def create_app():
@@ -17,6 +19,9 @@ def create_app():
     with app.app_context():
         db.init_app(app)
         migrate.init_app(app, db)
+
+        sess.init_app(app)
+        SqlAlchemySessionInterface(app, db, 'sessions', 'sess_')
 
     from la_reclame.auth import auth
     app.register_blueprint(auth, url_prefix='/auth')
