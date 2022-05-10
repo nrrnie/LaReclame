@@ -33,6 +33,20 @@ class PicturesDB:
         return filename
 
     def get_picture_path(self, table: str, filename: str) -> str:
+        if table not in self.tables:
+            print('Table', table, 'not in Tables list!')
+            return ''
+
         path = os.path.join(self.database_path, table)
         path = os.path.join(path, filename)
         return path
+
+    def delete_picture(self, table: str, filename: str):
+        if table not in self.tables:
+            print('Table', table, 'not in Tables list!')
+            return False
+
+        path = os.path.join(self.database_path, table)
+        path = os.path.join(path, filename)
+        os.remove(path)
+        print(path)

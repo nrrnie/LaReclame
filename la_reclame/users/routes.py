@@ -2,7 +2,7 @@ from flask import render_template, request, session
 from flask import flash
 from la_reclame.users import users
 from la_reclame.models import Users
-from utils import auth_required
+from utils import auth_required, picturesDB
 from la_reclame import db
 
 
@@ -24,15 +24,29 @@ def settings():
         return render_template('settings.html', user=session['user'])
 
     username = request.form.get('username')
+    user = Users.query.get(session['user'].id)
 
-    if Users.query.filter_by(username=username).first() is not None:
+    if user.username != username and Users.query.filter_by(username=username).first() is not None:
         flash('Username is already taken', 'danger')
-    else:
-        user = Users.query.get(session['user'].id)
+    elif user.username != username:
         user.username = username
         db.session.commit()
 
         session['user'] = user
 
-        flash('Info was updated', 'success')
+        flash('Username is changes', 'success')
+
+    picture = request.files.get('profile-picture')
+    if picture:
+        if user.picture is not None:
+            picturesDB.delete_picture('profile-pictures', user.picture)
+
+        picture_name = picturesDB.add_picture('profile-pictures', picture)
+        user.picture = picture_name
+        db.session.commit()
+
+        session['user'] = user
+
+        flash('Picture is updated!', 'success')
+
     return render_template('settings.html', user=session['user'])

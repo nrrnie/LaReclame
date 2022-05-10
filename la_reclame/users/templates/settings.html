@@ -8,7 +8,11 @@
 <div class="container mt-5">
     <div class="card d-flex justify-content-center">
         <div class="card-body">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
+                <div class=" mb-3">
+                    <label for="profile-picture-input" class="form-label">Profile picture</label>
+                    <input type="file" class="form-control" id="profile-picture-input" name="profile-picture">
+                </div>
                 <div class="mb-3">
                     <label for="username-input" class="form-label">Username</label>
                     <input type="text" id="username-input" class="form-control" name="username"
