@@ -20,7 +20,7 @@ def login():
         flash('Username or password is wrong', 'danger')
         return render_template('login.html')
 
-    return 'main page'
+    return redirect(url_for('items.items_home'))
 
 
 @auth.route('/register', methods=['GET', 'POST'])
