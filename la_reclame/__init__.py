@@ -1,6 +1,6 @@
+from flask import Flask, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask import Flask
 from config import Config
 
 
@@ -24,5 +24,9 @@ def create_app():
     app.register_blueprint(users, url_prefix='/users')
     from la_reclame.items import items
     app.register_blueprint(items, url_prefix='/items')
+
+    @app.route('/')
+    def main():
+        return redirect(url_for('items.items_home'))
 
     return app
