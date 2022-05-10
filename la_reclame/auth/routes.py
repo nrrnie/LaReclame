@@ -11,6 +11,17 @@ def login():
     if request.method == 'GET':
         return render_template('login.html')
 
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    user = Users.query.filter_by(username=username).first()
+
+    if user is None or sha256_crypt.verify(password, user.password) is False:
+        flash('Username or password is wrong', 'danger')
+        return render_template('login.html')
+
+    return 'main page'
+
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
