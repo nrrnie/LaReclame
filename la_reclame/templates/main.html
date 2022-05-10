@@ -13,6 +13,14 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
-    {% block body %}{% endblock %}
+{% block body %}{% endblock %}
+
+<div class="alerts position-fixed d-flex flex-column justify-content-center start-50 translate-middle-x" style="z-index: 1; top: 35px;">
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ category }} text-center" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
 </body>
 </html>
