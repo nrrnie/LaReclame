@@ -15,5 +15,5 @@ class Items(db.Model):
     user_id = db.Column(db.Integer, nullable=False, index=True)
     created = db.Column(db.DATETIME, nullable=False, default=datetime.now)
     title = db.Column(db.String(255), nullable=False)
-    body = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.String(255), nullable=False)
     is_active = db.Column(db.Boolean, nullable=False, default=True)
