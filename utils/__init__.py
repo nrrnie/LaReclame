@@ -1,5 +1,7 @@
 from flask import session, redirect, url_for
 import functools
+from utils.PicturesDB import PicturesDB
+picturesDB = PicturesDB()
 
 
 def auth_required(func):
