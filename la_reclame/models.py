@@ -12,7 +12,7 @@ class Users(db.Model):
 
 class Items(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    author_username = db.Column(db.String(255), nullable=False)
+    user_id = db.Column(db.Integer, nullable=False, index=True)
     created = db.Column(db.DATETIME, nullable=False, default=datetime.now)
     title = db.Column(db.String(255), nullable=False)
     body = db.Column(db.String(255), nullable=False)
