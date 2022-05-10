@@ -1,9 +1,11 @@
-from flask import render_template, session
+from flask import render_template
 from la_reclame.users import users
 from la_reclame.models import Users
+from utils import auth_required
 
 
 @users.route('/<username>')
+@auth_required
 def profile(username: str):
     user = Users.query.filter_by(username=username).first()
 
