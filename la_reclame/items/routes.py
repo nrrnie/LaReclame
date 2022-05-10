@@ -11,6 +11,16 @@ def items_home():
     return render_template('items.html', user=session['user'], items=Items.query.all())
 
 
+@items.route('/<item_id>')
+@auth_required
+def item_page(item_id: int):
+    item = Items.query.get(item_id)
+    if item is None:
+        return '404\nItem not found'
+
+    return render_template('item-page.html', user=session['user'], item=item)
+
+
 @items.route('/add-item', methods=['GET', 'POST'])
 @auth_required
 def add_item():

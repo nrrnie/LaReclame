@@ -1,0 +1,62 @@
+{% extends 'main_with_header.html' %}
+
+{% block title %} {{ item.title }} {% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="main-body">
+        <div class="row">
+            <div class="col-lg-8 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="img-fluid">
+                            <img src="http://127.0.0.1:5001/utils/get-image/users-test.jpg"
+                                 class="w-50 mx-auto d-block">
+                        </div>
+
+                        <div class="item-info mt-5">
+                            <h4 class="title text-center">Item title</h4>
+                            <p class="item-description text-center mt-3">Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                                enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                                commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                                dolore eu fugiat nulla pariatur.</p>
+                        </div>
+
+                        <div class="item-additional-info mt-5 d-flex justify-content-evenly">
+                            <div class="item-cost-block"><p class="text-secondary item-cost d-inline">Cost:
+                                <p class="d-inline">15000</p></p></div>
+                            <div class="item-date-block"><p class="text-secondary item-date d-inline">Date:
+                                <p class="d-inline">28.04.2022 15:37</p></p></div>
+
+                            <p class="text-end text-secondary item-author">Seller: <a href="#"
+                                                                                      class="text-primary text-decoration-none"
+                                                                                      role="button">Mercurial</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mt-5">
+                <div class="row">
+                    <div class="card mb-5">
+                        <div class="card-body">
+                            <div class="author-box d-flex justify-content w-100">
+                                <img src="http://127.0.0.1:5001/utils/get-image/users-test.jpg"
+                                     class="rounded-circle w-25 h-25">
+                                <div class="author-info w-100 ps-5">
+                                    <h3 class="text-start"><a href="#" class="text-decoration-none text-dark">{{
+                                        user.username }}</a></h3>
+                                    <p class="text-secondary">Rating: 4.99</p>
+                                    <div class="contact-box mx-auto">
+                                        <a type="button" class="btn btn-outline-secondary btn-sm">Contact</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
