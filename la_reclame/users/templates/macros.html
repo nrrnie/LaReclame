@@ -1,0 +1,25 @@
+{% macro item_card(item) %}
+<div class="card">
+    <div class="card-body">
+        <h5 class="d-flex align-items-center mb-3">{{ item['title'] }}</h5>
+        <hr class="my-3">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="static/images/user-profile.jpg" alt="item-image" class="item-image" width="200">
+            </div>
+            <div class="col-md-8">
+                <p class="description">{{ item['body'] }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro empty_card(msg) %}
+<div class="card">
+    <div class="card-body">
+        <h5 class="d-flex align-items-center mb-3">{{ msg }}</h5>
+        <hr class="my-3">
+    </div>
+</div>
+{% endmacro %}
