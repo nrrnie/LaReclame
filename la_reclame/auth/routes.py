@@ -1,5 +1,5 @@
 from flask import request, render_template, flash, get_flashed_messages
-from flask import redirect, url_for
+from flask import redirect, url_for, session
 from passlib.hash import sha256_crypt
 from la_reclame.models import Users
 from la_reclame.auth import auth
@@ -20,6 +20,7 @@ def login():
         flash('Username or password is wrong', 'danger')
         return render_template('login.html')
 
+    session['user'] = user
     return redirect(url_for('items.items_home'))
 
 
