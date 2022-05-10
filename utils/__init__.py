@@ -7,7 +7,16 @@ def auth_required(func):
     def wrapper(*args, **kwargs):
         if session.get('user') is None:
             return redirect(url_for('auth.login'))
-        else:
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
+def not_auth(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        if session.get('user') is None:
             return func(*args, **kwargs)
+        return redirect(url_for('items.items_home'))
 
     return wrapper

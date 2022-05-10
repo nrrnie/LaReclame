@@ -4,9 +4,11 @@ from passlib.hash import sha256_crypt
 from la_reclame.models import Users
 from la_reclame.auth import auth
 from la_reclame import db
+from utils import not_auth
 
 
 @auth.route('/login', methods=['GET', 'POST'])
+@not_auth
 def login():
     if request.method == 'GET':
         return render_template('login.html')
@@ -25,6 +27,7 @@ def login():
 
 
 @auth.route('/register', methods=['GET', 'POST'])
+@not_auth
 def register():
     if request.method == 'GET':
         return render_template('register.html')
