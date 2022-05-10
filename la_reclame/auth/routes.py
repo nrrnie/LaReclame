@@ -6,3 +6,9 @@ from la_reclame.auth import auth
 def login():
     if request.method == 'GET':
         return render_template('login.html')
+
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('register.html')

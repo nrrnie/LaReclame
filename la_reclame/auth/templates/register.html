@@ -1,0 +1,30 @@
+{% extends 'auth_template.html' %}
+
+{% block title %} Register {% endblock %}
+
+{% block form %}
+<p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Register</p>
+<form method="POST">
+    <div class="mb-3">
+        <label for="username-input" class="form-label">Enter username</label>
+        <input type="number" class="form-control" id="username-input" name="username" placeholder="Enter username" required>
+    </div>
+    <div class="mb-3">
+        <label for="email-input" class="form-label">Enter email</label>
+        <input type="number" class="form-control" id="email-input" name="email" placeholder="Enter email" required>
+    </div>
+    <div class="mb-3">
+        <label for="password-input" class="form-label">Enter password</label>
+        <input type="password" class="form-control" minlength="8" id="password-input"
+               name="password" placeholder="at least 8 characters" required>
+    </div>
+    <div class="mb-3">
+        <label for="password-confirm-input" class="form-label">Confirm password</label>
+        <input type="password" class="form-control" minlength="8" id="password-confirm-input"
+               name="password" placeholder="re-enter password" required>
+    </div>
+    <a href="{{ url_for('auth.login') }}"
+       class="d-block text-secondary text-decoration-none mb-3">Already have an account?</a>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+{% endblock %}
