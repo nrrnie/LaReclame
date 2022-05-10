@@ -4,7 +4,7 @@ from passlib.hash import sha256_crypt
 from la_reclame.models import Users
 from la_reclame.auth import auth
 from la_reclame import db
-from utils import not_auth
+from utils import not_auth, auth_required
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -54,5 +54,13 @@ def register():
     db.session.commit()
 
     flash('User was created!', 'success')
+
+    return redirect(url_for('auth.login'))
+
+
+@auth.route('/logout')
+@auth_required
+def logout():
+    del session['user']
 
     return redirect(url_for('auth.login'))
