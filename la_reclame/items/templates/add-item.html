@@ -1,0 +1,46 @@
+{% extends 'main_with_header.html' %}
+
+{% block title %} Add item {% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-lg-10">
+            <h1 class="mb-5">Place your add</h1>
+            <form method="post">
+                <div class="dropdown mb-5">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="choose-category"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        Choose category
+                    </button>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+
+                <div class="mb-5">
+                    <label for="item-image-input" class="form-label fs-4">Images</label>
+                    <input class="form-control" type="file" id="item-image-input" multiple>
+                </div>
+
+                <div class="mb-5">
+                    <label for="item-title-input" class="form-label fs-4">Title</label>
+                    <input type="text" class="form-control" id="item-title-input" name="item-title">
+                </div>
+
+                <div class="mb-5">
+                    <label for="item-description-input" class="form-label fs-4">Description</label>
+                    <textarea class="form-control" id="item-description-input" rows="4" name="item-description"></textarea>
+                </div>
+
+                <div class="d-flex justify-content-center mb-3">
+                    <button type="submit" class="btn btn-primary">Create item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
