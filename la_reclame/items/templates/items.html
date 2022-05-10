@@ -48,19 +48,19 @@
 <div class="container mt-5">
     <div class="card mb-5">
         <div class="row">
+            {% for item in items %}
             <div class="col-sm-4 border-end">
                 <img src="static/images/A4.jpg" class="img-fluid rounded-start p-3">
             </div>
             <div class="col-sm-8 p-3">
-                <h4 class="card-title">Продам бумагу А4</h4>
-                <p class="card-body text-secondary pb-5">Продам бумагу A4 SvetoCopy 500 листов в пачке. Продам
-                    бумагу A4 SvetoCopy 500 листов в пачке. Продам бумагу A4 SvetoCopy 500 листов в пачке. Продам
-                    бумагу A4 SvetoCopy 500 листов в пачке. Продам бумагу A4 SvetoCopy 500 листов в пачке</p>
+                <h4 class="card-title">{{ item.title }}</h4>
+                <p class="card-body text-secondary pb-5">{{ item.description }}</p>
                 <div class="d-flex justify-content-evenly mt-5 pt-5">
-                    <p class="d-inline">Published: 2021-05-04 21:36</p>
-                    <p class="text-end text-secondary d-inline">Seller: <a class="text-primary text-decoration-none">Mercurial</a>
+                    <p class="d-inline">Published: {{ item.created }}</p>
+                    <p class="text-end text-secondary d-inline">Seller: <a class="text-primary text-decoration-none">{{ get_user_by_id(item.user_id).username }}</a>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>
