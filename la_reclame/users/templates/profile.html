@@ -1,6 +1,8 @@
 {% from 'macros.html' import item_card, empty_card with context %}
 {% extends 'main_with_header.html' %}
 
+{% block title %} {{ user.username }} {% endblock %}
+
 {% block body %}
 <div class="container mt-5">
     <div class="main-body">
