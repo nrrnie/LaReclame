@@ -8,6 +8,7 @@ class Users(db.Model):
     password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     registered = db.Column(db.DATETIME, nullable=False, default=datetime.now)
+    picture = db.Column(db.String(255))
 
 
 class Items(db.Model):
