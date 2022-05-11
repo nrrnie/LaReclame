@@ -27,13 +27,18 @@ def add_item():
     if request.method == 'GET':
         return render_template('add-item.html', user=session['user'])
 
-    image_paths = [picturesDB.add_picture('item-pictures', filename)
-                   for filename in request.files.getlist('item-pictures')]
+    main_picture = request.files.get('item-main-picture')
+    main_picture = picturesDB.add_picture('item-pictures', main_picture) if main_picture != '' else None
+
+    image_paths = [picturesDB.add_picture('item-pictures', file)
+                   for file in request.files.getlist('item-pictures') if file.filename != '']
 
     title = request.form.get('item-title')
     description = request.form.get('item-description')
 
-    item = Items(user_id=session['user'].id, title=title, description=description, pictures=','.join(image_paths))
+    item = Items(user_id=session['user'].id, title=title, description=description,
+                 pictures=','.join(image_paths), main_picture=main_picture)
+    
     db.session.add(item)
     db.session.commit()
 
