@@ -32,6 +32,7 @@
                 {{ user.username }}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{{ url_for('items.add_item') }}">Add item</a></li>
                 <li><a class="dropdown-item" href="{{ url_for('users.profile', username=user.username) }}">Profile</a></li>
                 <li><a class="dropdown-item" href="{{ url_for('users.settings') }}">Settings</a></li>
                 <li>
