@@ -9,10 +9,12 @@
             <div class="col-lg-8 mt-5">
                 <div class="card">
                     <div class="card-body">
+                        {% if item.main_picture %}
                         <div class="img-fluid">
-                            <img src="http://127.0.0.1:5001/utils/get-image/users-test.jpg"
+                            <img src="{{ url_for('utils.get_picture', table='item-pictures', filename=item.main_picture) }}"
                                  class="w-50 mx-auto d-block">
                         </div>
+                        {% endif %}
 
                         <div class="item-info mt-5">
                             <h4 class="title text-center">Item title</h4>
