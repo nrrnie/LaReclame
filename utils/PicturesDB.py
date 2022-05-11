@@ -13,7 +13,7 @@ class PicturesDB:
             os.mkdir(self.database_path)
             print('Pictures Database created!')
 
-        self.tables = ['profile-pictures']
+        self.tables = ['profile-pictures', 'item-pictures']
         for table in self.tables:
             table_path = os.path.join(self.database_path, table)
             if not os.path.exists(table_path):
