@@ -7,7 +7,7 @@
     <div class="row d-flex justify-content-center">
         <div class="col-lg-10">
             <h1 class="mb-5">Place your add</h1>
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <div class="dropdown mb-5">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="choose-category"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -23,7 +23,7 @@
 
                 <div class="mb-5">
                     <label for="item-image-input" class="form-label fs-4">Images</label>
-                    <input class="form-control" type="file" id="item-image-input" multiple>
+                    <input class="form-control" type="file" id="item-image-input" name="item-pictures" multiple>
                 </div>
 
                 <div class="mb-5">

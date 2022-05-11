@@ -2,7 +2,7 @@ from flask import render_template, session, request, flash
 from la_reclame.items import items
 from la_reclame.models import Items, Users
 from la_reclame import db
-from utils import auth_required
+from utils import auth_required, picturesDB
 
 
 @items.route('/')
@@ -27,10 +27,13 @@ def add_item():
     if request.method == 'GET':
         return render_template('add-item.html', user=session['user'])
 
+    image_paths = [picturesDB.add_picture('item-pictures', filename)
+                   for filename in request.files.getlist('item-pictures')]
+
     title = request.form.get('item-title')
     description = request.form.get('item-description')
 
-    item = Items(user_id=session['user'].id, title=title, description=description)
+    item = Items(user_id=session['user'].id, title=title, description=description, pictures=','.join(image_paths))
     db.session.add(item)
     db.session.commit()
 
