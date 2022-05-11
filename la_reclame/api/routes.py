@@ -47,3 +47,19 @@ def register():
 def get_items():
     items = [item.serialize() for item in Items.query.all()]
     return dict(status='ok', items=items)
+
+
+@api.route('/add/item', methods=['POST'])
+def add_item():
+    user_id = request.form.get('user_id')
+    title = request.form.get('title')
+    description = request.form.get('description')
+
+    if None in [user_id, title, description]:
+        return dict(status='error', error='Not all data was given.')
+
+    item = Items(user_id=user_id, title=title, description=description)
+    db.session.add(item)
+    db.session.commit()
+
+    return dict(status='ok')
