@@ -1,6 +1,6 @@
-from flask import request
+from flask import request, jsonify
 from passlib.hash import sha256_crypt
-from la_reclame.models import Users
+from la_reclame.models import Users, Items
 from la_reclame.api import api
 from la_reclame import db
 
@@ -41,3 +41,9 @@ def register():
     db.session.commit()
 
     return dict(status='ok')
+
+
+@api.route('/items', methods=['POST'])
+def get_items():
+    items = [item.serialize() for item in Items.query.all()]
+    return dict(status='ok', items=items)
