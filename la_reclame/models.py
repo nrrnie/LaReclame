@@ -20,3 +20,15 @@ class Items(db.Model):
     is_active = db.Column(db.Boolean, nullable=False, default=True)
     pictures = db.Column(db.Text)
     main_picture = db.Column(db.String(255))
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'created': str(self.created),
+            'title': self.title,
+            'description': self.description,
+            'is_active': self.is_active,
+            'pictures': self.pictures,
+            'main_picture': self.main_picture,
+        }
