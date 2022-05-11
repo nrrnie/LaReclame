@@ -29,6 +29,8 @@ def create_app():
     app.register_blueprint(users, url_prefix='/users')
     from la_reclame.items import items
     app.register_blueprint(items, url_prefix='/items')
+    from la_reclame.utils import utils
+    app.register_blueprint(utils, url_prefix='/utils')
 
     @app.route('/')
     def main():
