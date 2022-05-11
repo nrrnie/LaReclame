@@ -18,3 +18,4 @@ class Items(db.Model):
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=False)
     is_active = db.Column(db.Boolean, nullable=False, default=True)
+    pictures = db.Column(db.Text)
