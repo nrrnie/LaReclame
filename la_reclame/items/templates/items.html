@@ -65,8 +65,9 @@
                 <p class="card-body text-secondary ps-0">{{ item.description }}</p>
                 <div class="d-flex justify-content-evenly align-items-end">
                     <p class="d-inline">Published: {{ item.created }}</p>
-                    <p class="text-end text-secondary">Seller: <a class="text-primary text-decoration-none">{{
-                        get_user_by_id(item.user_id).username }}</a>
+                    {% set item_user = get_user_by_id(item.user_id) %}
+                    <p class="text-end text-secondary">Seller: <a href="{{ url_for('users.profile', username=item_user.username) }}" class="text-primary text-decoration-none">{{
+                        item_user.username }}</a>
                 </div>
             </div>
         </div>
