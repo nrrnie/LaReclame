@@ -41,7 +41,7 @@
                     <div class="card mb-5">
                         <div class="card-body">
                             <div class="author-box d-flex justify-content w-100">
-                                <img src="http://127.0.0.1:5001/utils/get-image/users-test.jpg"
+                                <img src="{{ url_for('utils.get_picture', filename=user.picture) }}"
                                      class="rounded-circle w-25 h-25">
                                 <div class="author-info w-100 ps-5">
                                     <h3 class="text-start"><a href="#" class="text-decoration-none text-dark">{{
