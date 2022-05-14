@@ -42,3 +42,8 @@ class Items(db.Model):
             'pictures': self.pictures,
             'main_picture': self.main_picture,
         }
+
+
+class Categories(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    category_name = db.Column(db.String(255), nullable=False, unique=True)
