@@ -19,7 +19,7 @@ def login():
     if user is None or not sha256_crypt.verify(password, user.password):
         return dict(status='error', error='Username or password is incorrect.')
 
-    return dict(status='ok')
+    return dict(status='ok', user=user.serialize())
 
 
 @api.route('/auth/register', methods=['POST'])
