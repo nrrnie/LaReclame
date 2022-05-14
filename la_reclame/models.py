@@ -10,6 +10,16 @@ class Users(db.Model):
     registered = db.Column(db.DATETIME, nullable=False, default=datetime.now)
     picture = db.Column(db.String(255))
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'password': self.password,
+            'email': self.email,
+            'registered': str(self.registered),
+            'picture': self.picture,
+        }
+
 
 class Items(db.Model):
     id = db.Column(db.Integer, primary_key=True)
