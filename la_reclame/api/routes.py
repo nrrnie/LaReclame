@@ -83,4 +83,4 @@ def update_profile_picture():
     user.picture = filename
     db.session.commit()
 
-    return 'a'
+    return dict(status='ok')
