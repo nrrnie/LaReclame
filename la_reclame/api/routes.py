@@ -1,8 +1,9 @@
-from flask import request, jsonify
+from flask import request
 from passlib.hash import sha256_crypt
 from la_reclame.models import Users, Items
 from la_reclame.api import api
 from la_reclame import db
+from utils import picturesDB
 
 
 @api.route('/auth/login', methods=['POST'])
@@ -63,3 +64,23 @@ def add_item():
     db.session.commit()
 
     return dict(status='ok')
+
+
+@api.route('/update/profile-picture', methods=['POST'])
+def update_profile_picture():
+    user_id = request.form.get('user_id')
+    encoded_image = request.form.get('encodedImage')
+
+    if None in [user_id, encoded_image]:
+        return dict(status='error', error='Not all data was given.')
+
+    user = Users.query.get(user_id)
+
+    if user is None:
+        return dict(status='error', error='User with such ID does not exist.')
+
+    filename = picturesDB.add_picture_from_app('profile-pictures', encoded_image)
+    user.picture = filename
+    db.session.commit()
+
+    return 'a'

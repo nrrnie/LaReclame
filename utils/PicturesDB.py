@@ -1,4 +1,5 @@
 from werkzeug.datastructures import FileStorage
+from base64 import decodebytes
 from typing import Union
 from uuid import uuid4
 import os
@@ -25,7 +26,7 @@ class PicturesDB:
             print('Table', table, 'not in Tables list!')
             return False
 
-        filename = uuid4().__str__() + '.' + picture.filename.split('.')[-1]
+        filename = self.get_random_image_name(picture.filename.split('.')[-1])
 
         table_path = os.path.join(self.database_path, table)
         picture.save(os.path.join(table_path, filename))
@@ -49,4 +50,21 @@ class PicturesDB:
         path = os.path.join(self.database_path, table)
         path = os.path.join(path, filename)
         os.remove(path)
-        print(path)
+
+    def add_picture_from_app(self, table: str, encoded_image: str):
+        if table not in self.tables:
+            print('Table', table, 'not in Tables list!')
+            return False
+
+        filename = self.get_random_image_name('jpeg')
+
+        path = os.path.join(self.database_path, table)
+        path = os.path.join(path, filename)
+        with open(path, "wb") as fh:
+            fh.write(decodebytes(bytes(encoded_image, 'utf-8')))
+
+        return filename
+
+    @staticmethod
+    def get_random_image_name(extension: str):
+        return uuid4().__str__() + '.' + extension
