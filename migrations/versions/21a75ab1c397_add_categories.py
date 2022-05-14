@@ -7,6 +7,8 @@ Create Date: 2022-05-14 12:29:44.812691
 """
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy.sql import table, column
+from sqlalchemy import Integer, String
 
 
 # revision identifiers, used by Alembic.
@@ -24,6 +26,19 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('category_name')
     )
+
+    categories = table('categories',
+                       column('id', Integer),
+                       column('category_name', String))
+
+    op.bulk_insert(categories, [
+        {'category_name': 'Housing'},
+        {'category_name': 'Buy/Sale'},
+        {'category_name': 'Lost-and-Found'},
+        {'category_name': 'Project'},
+        {'category_name': 'Services'},
+        {'category_name': 'Other'},
+    ])
     # ### end Alembic commands ###
 
 
