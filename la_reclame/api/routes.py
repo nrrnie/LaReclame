@@ -52,14 +52,21 @@ def get_items():
 
 @api.route('/add/item', methods=['POST'])
 def add_item():
-    user_id = request.form.get('user_id')
+    user_id = int(request.form.get('user_id'))
+    category_id = int(request.form.get('category_id'))
     title = request.form.get('title')
     description = request.form.get('description')
 
-    if None in [user_id, title, description]:
+    if None in [user_id, title, description, category_id]:
         return dict(status='error', error='Not all data was given.')
 
-    item = Items(user_id=user_id, title=title, description=description)
+    if Users.query.get(user_id) is None:
+        return dict(status='error', error='User with such id not found.')
+
+    if Categories.query.get(category_id) is None:
+        return dict(status='error', error='Category with such id not found.')
+
+    item = Items(user_id=user_id, title=title, description=description, category_id=category_id)
     db.session.add(item)
     db.session.commit()
 
