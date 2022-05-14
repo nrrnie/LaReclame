@@ -65,6 +65,16 @@ class PicturesDB:
 
         return filename
 
+    def get_image_as_bytes(self, table: str, filename: str):
+        if table not in self.tables:
+            print('Table', table, 'not in Tables list!')
+            return False
+
+        path = os.path.join(self.database_path, table)
+        path = os.path.join(path, filename)
+
+        return open(path, 'rb').read()
+
     @staticmethod
     def get_random_image_name(extension: str):
         return uuid4().__str__() + '.' + extension
