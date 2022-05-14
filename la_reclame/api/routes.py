@@ -1,6 +1,6 @@
 from flask import request
 from passlib.hash import sha256_crypt
-from la_reclame.models import Users, Items
+from la_reclame.models import Users, Items, Categories
 from la_reclame.api import api
 from la_reclame import db
 from utils import picturesDB
@@ -84,3 +84,10 @@ def update_profile_picture():
     db.session.commit()
 
     return dict(status='ok')
+
+
+@api.route('/categories', methods=['POST'])
+def get_categories():
+    categories = [category.serialize() for category in Categories.query.order_by(Categories.id.asc()).all()]
+
+    return dict(status='ok', categories=categories)
