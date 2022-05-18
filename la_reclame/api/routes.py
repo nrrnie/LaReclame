@@ -1,9 +1,14 @@
-from flask import request
+from itsdangerous import URLSafeTimedSerializer
+from flask import request, url_for
 from passlib.hash import sha256_crypt
 from la_reclame.models import Users, Items, Categories
 from la_reclame.api import api
 from la_reclame import db
-from utils import picturesDB
+from utils import picturesDB, send_email
+from os import getenv
+
+
+url_serializer = URLSafeTimedSerializer(getenv('SECRET_KEY'))
 
 
 @api.route('/auth/login', methods=['POST'])
@@ -43,6 +48,11 @@ def register():
     user = Users(username=username, email=email, password=sha256_crypt.hash(password))
     db.session.add(user)
     db.session.commit()
+
+    token = url_serializer.dumps(email, salt=getenv('SECRET_KEY_EMAIL_CONFIRM'))
+    token_link = url_for('auth.confirm_email', token=token, _external=True)
+
+    send_email(email, token_link)
 
     return dict(status='ok')
 
