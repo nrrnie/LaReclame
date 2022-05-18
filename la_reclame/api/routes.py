@@ -4,9 +4,8 @@ from passlib.hash import sha256_crypt
 from la_reclame.models import Users, Items, Categories
 from la_reclame.api import api
 from la_reclame import db
-from utils import picturesDB, send_email
+from utils import picturesDB, send_email, PriceTypes
 from os import getenv
-
 
 url_serializer = URLSafeTimedSerializer(getenv('SECRET_KEY'))
 
@@ -69,8 +68,10 @@ def add_item():
     category_id = int(request.form.get('category_id'))
     title = request.form.get('title')
     description = request.form.get('description')
+    price_type = request.form.get('price_type')
+    price = request.form.get('price')
 
-    if None in [user_id, title, description, category_id]:
+    if None in [user_id, title, description, category_id, price_type] or price_type == 'fixed' and price is None:
         return dict(status='error', error='Not all data was given.')
 
     if Users.query.get(user_id) is None:
@@ -79,7 +80,8 @@ def add_item():
     if Categories.query.get(category_id) is None:
         return dict(status='error', error='Category with such id not found.')
 
-    item = Items(user_id=user_id, title=title, description=description, category_id=category_id)
+    item = Items(user_id=user_id, title=title, description=description, category_id=category_id,
+                 price_type=PriceTypes[price_type], price=int(price))
     db.session.add(item)
     db.session.commit()
 
