@@ -1,6 +1,6 @@
 from la_reclame import db
 from datetime import datetime
-from enum import Enum
+from utils import PriceTypes
 
 
 class Users(db.Model):
@@ -21,12 +21,6 @@ class Users(db.Model):
             'registered': str(self.registered),
             'picture': self.picture,
         }
-
-
-class PriceTypes(Enum):
-    fixed = 1
-    free = 2
-    negotiable = 3
 
 
 class Items(db.Model):

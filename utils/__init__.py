@@ -3,6 +3,7 @@ from utils.PicturesDB import PicturesDB
 from email.message import EmailMessage
 from smtplib import SMTP_SSL
 from os import getenv
+from enum import Enum
 import functools
 picturesDB = PicturesDB()
 
@@ -37,3 +38,9 @@ def send_email(to: str, token_link: str):
     with SMTP_SSL('smtp.gmail.com', int(getenv('SMTP_PORT'))) as smtp:
         smtp.login(getenv('SMTP_SENDER'), getenv('SMTP_PASSWORD'))
         smtp.send_message(message)
+
+
+class PriceTypes(Enum):
+    fixed = 1
+    free = 2
+    negotiable = 3
