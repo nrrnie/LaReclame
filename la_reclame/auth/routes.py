@@ -1,10 +1,15 @@
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from flask import request, render_template, flash, get_flashed_messages
 from flask import redirect, url_for, session
 from passlib.hash import sha256_crypt
 from la_reclame.models import Users
 from la_reclame.auth import auth
 from la_reclame import db
-from utils import not_auth, auth_required
+from utils import not_auth, auth_required, send_email
+from os import getenv
+
+
+url_serializer = URLSafeTimedSerializer(getenv('SECRET_KEY'))
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -53,6 +58,11 @@ def register():
     db.session.add(user)
     db.session.commit()
 
+    token = url_serializer.dumps(email, salt=getenv('SECRET_KEY_EMAIL_CONFIRM'))
+    token_link = url_for('auth.confirm_email', token=token, _external=True)
+
+    send_email(email, token_link)
+
     flash('User was created!', 'success')
 
     return redirect(url_for('auth.login'))
@@ -62,5 +72,23 @@ def register():
 @auth_required
 def logout():
     del session['user']
+
+    return redirect(url_for('auth.login'))
+
+
+@auth.route('/confirm-email/<token>')
+def confirm_email(token: str):
+    try:
+        email = url_serializer.loads(token, salt=getenv('SECRET_KEY_EMAIL_CONFIRM'), max_age=900)
+    except SignatureExpired:
+        return '<h1>The token is expired!</h1>'
+    except BadTimeSignature:
+        return '<h1>This isn\'t the right token!</h1>'
+
+    user = Users.query.filter_by(email=email).first()
+    user.is_active = True
+    db.session.commit()
+
+    flash('User was activated!', 'success')
 
     return redirect(url_for('auth.login'))
