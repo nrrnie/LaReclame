@@ -19,6 +19,9 @@ def login():
     if user is None or not sha256_crypt.verify(password, user.password):
         return dict(status='error', error='Username or password is incorrect.')
 
+    if user.is_active is False:
+        return dict(status='error', error='User was not activated yet.')
+
     return dict(status='ok', user=user.serialize())
 
 
