@@ -1,5 +1,6 @@
 from la_reclame import db
 from datetime import datetime
+from enum import Enum
 
 
 class Users(db.Model):
@@ -22,6 +23,12 @@ class Users(db.Model):
         }
 
 
+class PriceTypes(Enum):
+    fixed = 1
+    free = 2
+    negotiable = 3
+
+
 class Items(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False, index=True)
@@ -29,6 +36,7 @@ class Items(db.Model):
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=False)
     is_active = db.Column(db.Boolean, nullable=False, default=True)
+    price_type = db.Column(db.Enum(PriceTypes), nullable=False)
     pictures = db.Column(db.Text)
     main_picture = db.Column(db.String(255))
     category_id = db.Column(db.Integer, index=True)
