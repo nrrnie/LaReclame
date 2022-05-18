@@ -37,6 +37,7 @@ class Items(db.Model):
     description = db.Column(db.String(255), nullable=False)
     is_active = db.Column(db.Boolean, nullable=False, default=True)
     price_type = db.Column(db.Enum(PriceTypes), nullable=False)
+    price = db.Column(db.Integer, index=True)
     pictures = db.Column(db.Text)
     main_picture = db.Column(db.String(255))
     category_id = db.Column(db.Integer, index=True)
