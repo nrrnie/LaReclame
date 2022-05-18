@@ -1,10 +1,11 @@
 from itsdangerous import URLSafeTimedSerializer
-from flask import request, url_for
+from flask import request, url_for, send_file
 from passlib.hash import sha256_crypt
 from la_reclame.models import Users, Items, Categories
 from la_reclame.api import api
 from la_reclame import db
 from utils import picturesDB, send_email, PriceTypes
+from urllib.parse import quote
 from os import getenv
 
 url_serializer = URLSafeTimedSerializer(getenv('SECRET_KEY'))
@@ -74,6 +75,8 @@ def add_item():
     if None in [user_id, title, description, category_id, price_type] or price_type == 'fixed' and price is None:
         return dict(status='error', error='Not all data was given.')
 
+    price = int(price) if price is not None else None
+
     if Users.query.get(user_id) is None:
         return dict(status='error', error='User with such id not found.')
 
@@ -81,7 +84,7 @@ def add_item():
         return dict(status='error', error='Category with such id not found.')
 
     item = Items(user_id=user_id, title=title, description=description, category_id=category_id,
-                 price_type=PriceTypes[price_type], price=int(price))
+                 price_type=PriceTypes[price_type], price=price)
     db.session.add(item)
     db.session.commit()
 
