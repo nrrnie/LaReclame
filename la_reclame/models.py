@@ -8,6 +8,7 @@ class Users(db.Model):
     password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     registered = db.Column(db.DATETIME, nullable=False, default=datetime.now)
+    is_active = db.Column(db.Boolean, nullable=False, default=False)
     picture = db.Column(db.String(255))
 
     def serialize(self):
