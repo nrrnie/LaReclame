@@ -27,6 +27,10 @@ def login():
         flash('Username or password is wrong', 'danger')
         return render_template('login.html')
 
+    if user.is_active is False:
+        flash('User was not activated yet', 'danger')
+        return render_template('login.html')
+
     session['user'] = user
     return redirect(url_for('items.items_home'))
 
