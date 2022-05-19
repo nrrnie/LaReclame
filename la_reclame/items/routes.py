@@ -19,6 +19,10 @@ def item_page(item_id: int):
     if item is None:
         return '404\nItem not found'
 
+    pictures = [item.main_picture] if item.main_picture else []
+    pictures.extend(item.pictures.split(',') if item.pictures else [])
+    item.pictures = pictures
+
     return render_template('item-page.html', user=session['user'], item=item)
 
 
