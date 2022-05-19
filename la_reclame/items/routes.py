@@ -1,6 +1,6 @@
 from flask import render_template, session, request, flash
 from la_reclame.items import items
-from la_reclame.models import Items, Users
+from la_reclame.models import Items, Users, Categories
 from la_reclame import db
 from utils import auth_required, picturesDB
 
@@ -25,7 +25,7 @@ def item_page(item_id: int):
 @auth_required
 def add_item():
     if request.method == 'GET':
-        return render_template('add-item.html', user=session['user'])
+        return render_template('add-item.html', user=session['user'], categories=Categories.query.order_by(Categories.id.asc()).all())
 
     main_picture = request.files.get('item-main-picture')
     main_picture = picturesDB.add_picture('item-pictures', main_picture) if main_picture != '' else None
