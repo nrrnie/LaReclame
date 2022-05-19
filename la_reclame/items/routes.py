@@ -37,7 +37,9 @@ def item_page(item_id: int):
     pictures.extend(item.pictures.split(',') if item.pictures else [])
     item.all_pictures = pictures
 
-    return render_template('item-page.html', user=session['user'], item=item)
+    user = Users.query.get(item.user_id)
+
+    return render_template('item-page.html', user=user, item=item)
 
 
 @items.route('/add-item', methods=['GET', 'POST'])
