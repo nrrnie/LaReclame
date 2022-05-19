@@ -1,7 +1,7 @@
 from flask import render_template, session, request, flash
 from flask import redirect, url_for
 from la_reclame.items import items
-from la_reclame.models import Items, Users, Categories, PriceTypes
+from la_reclame.models import Items, Users, Categories, PriceTypes, Reviews
 from la_reclame import db
 from utils import auth_required, picturesDB
 
@@ -60,3 +60,9 @@ def add_item():
 
     flash('Item is added!', 'success')
     return redirect(url_for('items.add_item'))
+
+@items.route('/<item_id>/reviews', methods=['POST'])
+@auth_required
+def item_reviews(item_id: int):
+    reviews = [review.serialize() for review in Reviews.query.filter_by(item_id=item_id).all()]
+    return dict(status='ok', reviews=reviews)

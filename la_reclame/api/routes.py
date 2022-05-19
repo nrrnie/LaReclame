@@ -116,3 +116,8 @@ def get_categories():
     categories = [category.serialize() for category in Categories.query.order_by(Categories.id.asc()).all()]
 
     return dict(status='ok', categories=categories)
+
+@api.route('/<item_id>/reviews', methods=['POST'])
+def item_reviews(item_id: int):
+    reviews = [review.serialize() for review in Reviews.query.filter_by(item_id=item_id).all()]
+    return dict(status='ok', reviews=reviews)
