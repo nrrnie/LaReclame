@@ -28,7 +28,7 @@ class Items(db.Model):
     user_id = db.Column(db.Integer, nullable=False, index=True)
     created = db.Column(db.DATETIME, nullable=False, default=datetime.now)
     title = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text, nullable=False)
     is_active = db.Column(db.Boolean, nullable=False, default=True)
     price_type = db.Column(db.Enum(PriceTypes), nullable=False)
     price = db.Column(db.Integer, index=True)
