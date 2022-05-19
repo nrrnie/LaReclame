@@ -11,6 +11,7 @@ class Users(db.Model):
     registered = db.Column(db.DATETIME, nullable=False, default=datetime.now)
     is_active = db.Column(db.Boolean, nullable=False, default=False)
     picture = db.Column(db.String(255))
+    rating = db.Column(db.Float, nullable=False, default=0)
 
     def serialize(self):
         return {
