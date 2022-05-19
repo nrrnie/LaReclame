@@ -15,7 +15,7 @@
                             <img src="{{ url_for('utils.get_picture', table='profile-pictures', filename=user.picture) }}" alt="Admin" class="p-1"
                                  width="250">
                             {% else %}
-                            <img src="/static/images/no-image.jpg" class="p-1">
+                            <img src="/static/images/no-image.jpg" class="p-1" width="150">
                             {% endif %}
                             <div class="mt-4 mb-3">
                                 <h4>{{ user['username'] }}</h4>
