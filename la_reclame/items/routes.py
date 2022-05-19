@@ -25,7 +25,8 @@ def item_page(item_id: int):
 @auth_required
 def add_item():
     if request.method == 'GET':
-        return render_template('add-item.html', user=session['user'], categories=Categories.query.order_by(Categories.id.asc()).all())
+        return render_template('add-item.html', user=session['user'],
+                               categories=Categories.query.order_by(Categories.id.asc()).all())
 
     main_picture = request.files.get('item-main-picture')
     main_picture = picturesDB.add_picture('item-pictures', main_picture) if main_picture != '' else None
@@ -38,12 +39,9 @@ def add_item():
 
     item = Items(user_id=session['user'].id, title=title, description=description,
                  pictures=','.join(image_paths), main_picture=main_picture)
-    
+
     db.session.add(item)
     db.session.commit()
 
     flash('Item is added!', 'success')
     return render_template('add-item.html', user=session['user'])
-
-
-
