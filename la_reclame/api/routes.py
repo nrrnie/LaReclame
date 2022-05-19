@@ -59,8 +59,21 @@ def register():
 
 @api.route('/items', methods=['POST'])
 def get_items():
-    items = [item.serialize() for item in Items.query.all()]
-    return dict(status='ok', items=items)
+    search = request.form.get('search', '')
+    if search != '':
+        title_like = Items.title.like("%{}%".format(search))
+        description_like = Items.description.like("%{}%".format(search))
+        items_list = Items.query.filter(title_like | description_like)
+    else:
+        items_list = Items.query
+
+    filter_by = request.form.get('filter_by', '')
+    if filter_by != '':
+        items_list = items_list.filter_by(category_id=filter_by).all()
+    else:
+        items_list = items_list.all()
+
+    return dict(status='ok', items=items_list)
 
 
 @api.route('/add/item', methods=['POST'])
@@ -109,6 +122,15 @@ def update_profile_picture():
     db.session.commit()
 
     return dict(status='ok')
+
+
+@api.route('/get-image', methods=['POST'])
+def get_item_image():
+    table = request.form.get('table')
+    filename = request.form.get('filename')
+    path = picturesDB.get_picture_path(table, filename)
+    # return dict(status='ok', image=quote(open(path, 'rb').read(), safe=""))
+    return dict(status='ok', image=open(path, 'rb').read())
 
 
 @api.route('/categories', methods=['POST'])
