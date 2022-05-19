@@ -8,22 +8,20 @@
         <div class="col-lg-10">
             <h1 class="mb-5">Place your add</h1>
             <form method="post" enctype="multipart/form-data">
-                <div class="dropdown mb-5">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="choose-category"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                        Choose category
-                    </button>
-
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
+                <div class="input-group mb-5">
+                    <label for="category-type-input" class="input-group-text">Category</label>
+                    <select class="form-select" id="category-type-input" aria-label="Example select with button addon"
+                            name="category-type">
+                        {% for category in categories %}
+                        <option>{{ category.category_name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
 
                 <div class="mb-5">
                     <label for="item-main-image-input" class="form-label fs-4">Main image</label>
-                    <input class="form-control" type="file" id="item-main-image-input" name="item-main-picture" multiple>
+                    <input class="form-control" type="file" id="item-main-image-input" name="item-main-picture"
+                           multiple>
                 </div>
 
                 <div class="mb-5">
@@ -38,8 +36,25 @@
 
                 <div class="mb-5">
                     <label for="item-description-input" class="form-label fs-4">Description</label>
-                    <textarea class="form-control" id="item-description-input" rows="4" name="item-description" required></textarea>
+                    <textarea class="form-control" id="item-description-input" rows="4" name="item-description"
+                              required></textarea>
                 </div>
+
+                <div class="mb-5">
+                    <label for="price-type-input" class="form-label fs-4">Price type</label>
+                    <select class="form-select" id="price-type-input" aria-label="Example select with button addon"
+                            name="price-type">
+                        <option>Fixed</option>
+                        <option>Free</option>
+                        <option>Negotiable</option>
+                    </select>
+                </div>
+
+                <div class="mb-5">
+                    <label for="item-price-input" class="form-label fs-4">Price</label>
+                    <input type="number" class="form-control" id="item-price-input" rows="4" name="item-price" required>
+                </div>
+
 
                 <div class="d-flex justify-content-center mb-3">
                     <button type="submit" class="btn btn-primary">Create item</button>
