@@ -30,7 +30,7 @@ def add_item():
         return render_template('add-item.html', user=session['user'], categories=categories)
 
     main_picture = request.files.get('item-main-picture')
-    main_picture = picturesDB.add_picture('item-pictures', main_picture) if main_picture != '' else None
+    main_picture = picturesDB.add_picture('item-pictures', main_picture) if main_picture.filename != '' else None
 
     image_paths = [picturesDB.add_picture('item-pictures', file)
                    for file in request.files.getlist('item-pictures') if file.filename != '']
@@ -49,7 +49,7 @@ def add_item():
 
     item = Items(user_id=session['user'].id, title=title, description=description,
                  pictures=','.join(image_paths), main_picture=main_picture, category_id=category_id,
-                 price_type=price_type, price=price)
+                 price_type=price_type, price=price if price else 0)
 
     db.session.add(item)
     db.session.commit()
