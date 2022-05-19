@@ -69,3 +69,14 @@ class Reviews(db.Model):
     description = db.Column(db.String(255), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     created = db.Column(db.DATETIME, nullable=False, default=datetime.now)
+
+    def serialize():
+        return {
+            'id': self.id,
+            'item_id': self.item_id,
+            'user_id': self.user_id,
+            'title': self.title,
+            'description': self.description,
+            'rating': self.rating,
+            'created': self.created,
+        }
