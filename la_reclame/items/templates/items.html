@@ -62,7 +62,7 @@
             <div class="col-sm-8 px-3 pt-3">
                 <a role="button" href="{{ url_for('items.item_page', item_id=item.id) }}"
                    class="card-title fs-4 text-decoration-none text-dark">{{ item.title }}</a>
-                <p class="card-body text-secondary ps-0">{{ item.description }}</p>
+                <p class="card-body text-secondary ps-0">{{ cut_description(item.description, 255) }}</p>
                 <div class="d-flex justify-content-evenly align-items-end">
                     <p class="d-inline">Published: {{ item.created }}</p>
                     {% set item_user = get_user_by_id(item.user_id) %}
