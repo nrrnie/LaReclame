@@ -6,7 +6,7 @@ from config import Config
 
 
 db = SQLAlchemy()
-migrate = Migrate()
+migrate = Migrate(compare_type=True)
 sess = Session()
 
 
