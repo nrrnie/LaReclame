@@ -1,6 +1,6 @@
 from flask import render_template, session, request, flash
 from la_reclame.items import items
-from la_reclame.models import Items, Users, Categories
+from la_reclame.models import Items, Users, Categories, PriceTypes
 from la_reclame import db
 from utils import auth_required, picturesDB
 
@@ -34,8 +34,16 @@ def add_item():
     image_paths = [picturesDB.add_picture('item-pictures', file)
                    for file in request.files.getlist('item-pictures') if file.filename != '']
 
+    category_type = request.form.get('category-type')
     title = request.form.get('item-title')
     description = request.form.get('item-description')
+    price_type = PriceTypes[request.form.get('price-type').lower()]
+    price = request.form.get('price', None)
+
+    if price_type == PriceTypes.fixed and price is None:
+        flash('At fixed price type you must fill price as well', 'danger')
+        return render_template('add-item.html', user=session['user'],
+                               categories=Categories.query.order_by(Categories.id.asc()).all())
 
     item = Items(user_id=session['user'].id, title=title, description=description,
                  pictures=','.join(image_paths), main_picture=main_picture)
