@@ -9,13 +9,21 @@ from utils import auth_required, picturesDB
 @items.route('/')
 @auth_required
 def items_home():
-    sort_by = request.values.get('sort_by')
-    if sort_by is not None:
-        items_list = Items.query.filter_by(category_id=sort_by).all()
+    search = request.values.get('search', '')
+    if search != '':
+        title_like = Items.title.like("%{}%".format(search))
+        description_like = Items.description.like("%{}%".format(search))
+        items_list = Items.query.filter(title_like | description_like)
     else:
-        items_list = Items.query.all()
+        items_list = Items.query
 
-    return render_template('items.html', user=session['user'], items=items_list)
+    filter_by = request.values.get('filter_by', '')
+    if filter_by != '':
+        items_list = items_list.filter_by(category_id=filter_by).all()
+    else:
+        items_list = items_list.all()
+
+    return render_template('items.html', user=session['user'], items=items_list, filter_by=filter_by, search=search)
 
 
 @items.route('/<item_id>')
