@@ -46,7 +46,7 @@
 
 <div class="container mt-5">
     {% if items|length == 0 %}
-        <h2 class="text-center">There are no items yet.</h2>
+    <h2 class="text-center">There are no items yet.</h2>
     {% endif %}
     {% for item in items %}
     <div class="card mb-5">
@@ -66,8 +66,18 @@
                 <div class="d-flex justify-content-evenly align-items-end">
                     <p class="d-inline">Published: {{ item.created }}</p>
                     {% set item_user = get_user_by_id(item.user_id) %}
-                    <p class="text-end text-secondary">Seller: <a href="{{ url_for('users.profile', username=item_user.username) }}" class="text-primary text-decoration-none">{{
+                    <p class="text-secondary">Seller: <a
+                            href="{{ url_for('users.profile', username=item_user.username) }}"
+                            class="text-primary text-decoration-none">{{
                         item_user.username }}</a>
+                    <div class="mb-3">
+                        <p class="text-secondary d-inline">Cost:</p>
+                        {% if item.price_type.name == 'fixed' %}
+                        <p class="text-dark d-inline">{{ item.price }}</p>
+                        {% else %}
+                        <p class="text-dark d-inline text-capitalize">{{ item.price_type.name }}</p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
