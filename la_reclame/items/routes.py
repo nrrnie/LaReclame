@@ -50,6 +50,9 @@ def add_item():
     if price_type == PriceTypes.fixed and price is None:
         flash('At fixed price type you must fill price as well', 'danger')
         return render_template('add-item.html', user=session['user'], categories=categories)
+    elif price_type == PriceTypes.fixed and price is not None and int(price) < 1:
+        flash('You should write appropriate price for the item', 'danger')
+        return render_template('add-item.html', user=session['user'], categories=categories)
 
     item = Items(user_id=session['user'].id, title=title, description=description,
                  pictures=','.join(image_paths), main_picture=main_picture, category_id=category_id,
