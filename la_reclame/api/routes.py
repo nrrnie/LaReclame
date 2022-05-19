@@ -73,7 +73,7 @@ def get_items():
     else:
         items_list = items_list.all()
 
-    return dict(status='ok', items=items_list)
+    return dict(status='ok', items=[item.serialize() for item in items_list])
 
 
 @api.route('/add/item', methods=['POST'])
