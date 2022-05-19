@@ -23,7 +23,7 @@ def item_page(item_id: int):
     pictures.extend(item.pictures.split(',') if item.pictures else [])
     item.pictures = pictures
 
-    return render_template('item-page.html', user=session['user'], item=item)
+    return render_template('item-page.html', user=session['user'], item=item, reviews=Reviews.query.filter_by(item_id=item_id))
 
 
 @items.route('/add-item', methods=['GET', 'POST'])
@@ -61,8 +61,25 @@ def add_item():
     flash('Item is added!', 'success')
     return redirect(url_for('items.add_item'))
 
-@items.route('/<item_id>/reviews', methods=['POST'])
+@items.route('/<item_id>/add/review', methods=['GET', 'POST'])
 @auth_required
-def item_reviews(item_id: int):
-    reviews = [review.serialize() for review in Reviews.query.filter_by(item_id=item_id).all()]
-    return dict(status='ok', reviews=reviews)
+def add_review(item_id: int):
+
+    username = session['user'].username
+    title = request.form.get('title')
+    description = request.form.get('description')
+    rating = request.form.get('rating')
+
+    if None in [title, description, rating]:
+        flash('Not all data was given for the review!', 'danger')
+
+    if Items.query.get(item_id) is None:
+        flash('Item with such ID was not found!', 'danger')
+
+    review = Reviews(item_id=item_id, username=username, title=title, description=description, rating=rating)
+
+    db.session.add(review)
+    db.session.commit()
+
+    flash('Review is added!', 'success')
+    return redirect(url_for('items.item_page', item_id=item_id))

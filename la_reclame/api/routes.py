@@ -1,7 +1,7 @@
 from itsdangerous import URLSafeTimedSerializer
 from flask import request, url_for, send_file
 from passlib.hash import sha256_crypt
-from la_reclame.models import Users, Items, Categories
+from la_reclame.models import Users, Items, Categories, Reviews
 from la_reclame.api import api
 from la_reclame import db
 from utils import picturesDB, send_email, PriceTypes

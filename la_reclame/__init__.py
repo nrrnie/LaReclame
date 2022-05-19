@@ -22,6 +22,7 @@ def create_app():
 
         sess.init_app(app)
         SqlAlchemySessionInterface(app, db, 'sessions', 'sess_')
+        db.create_all()
 
     from la_reclame.auth import auth
     app.register_blueprint(auth, url_prefix='/auth')

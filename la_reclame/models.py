@@ -11,7 +11,6 @@ class Users(db.Model):
     registered = db.Column(db.DATETIME, nullable=False, default=datetime.now)
     is_active = db.Column(db.Boolean, nullable=False, default=False)
     picture = db.Column(db.String(255))
-    rating = db.Column(db.Float, nullable=False, default=0)
 
     def serialize(self):
         return {
@@ -64,17 +63,17 @@ class Categories(db.Model):
 class Reviews(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     item_id = db.Column(db.Integer, nullable=False)
-    user_id = db.Column(db.Integer, nullable=False)
+    username = db.Column(db.String(255), nullable=False)
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     created = db.Column(db.DATETIME, nullable=False, default=datetime.now)
 
-    def serialize():
+    def serialize(self):
         return {
             'id': self.id,
             'item_id': self.item_id,
-            'user_id': self.user_id,
+            'username': self.username,
             'title': self.title,
             'description': self.description,
             'rating': self.rating,
