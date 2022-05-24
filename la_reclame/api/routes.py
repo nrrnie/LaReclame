@@ -156,9 +156,9 @@ def update_user_info():
     if user is None:
         return dict(status='error', error='User with such id not found.')
 
-    username = user.username if username is None else username
-    bio = user.bio if bio is None else bio
-    password = user.password if password is None else sha256_crypt.hash(password)
+    username = user.username if username in [None, ''] else username
+    bio = user.bio if bio in [None, ''] else bio
+    password = user.password if password in [None, ''] else sha256_crypt.hash(password)
 
     user.username = username
     user.bio = bio
