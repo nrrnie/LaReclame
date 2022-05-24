@@ -89,7 +89,7 @@ def add_item():
     if None in [user_id, title, description, category_id, price_type] or price_type == 'fixed' and price is None:
         return dict(status='error', error='Not all data was given.')
 
-    price = int(price) if price is not None else None
+    price = int(price) if price is not None else 0
 
     if Users.query.get(user_id) is None:
         return dict(status='error', error='User with such id not found.')
