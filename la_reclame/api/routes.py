@@ -139,3 +139,31 @@ def get_categories():
     categories = [category.serialize() for category in Categories.query.order_by(Categories.id.asc()).all()]
 
     return dict(status='ok', categories=categories)
+
+
+@api.route('/update-user-info', methods=['POST'])
+def update_user_info():
+    user_id = request.form.get('user_id')
+    username = request.form.get('username')
+    bio = request.form.get('bio')
+    password = request.form.get('password')
+
+    if user_id is None:
+        return dict(status='error', error='Not all data was given.')
+
+    user = Users.query.get(user_id)
+
+    if user is None:
+        return dict(status='error', error='User with such id not found.')
+
+    username = user.username if username is None else username
+    bio = user.bio if bio is None else bio
+    password = user.password if password is None else sha256_crypt.hash(password)
+
+    user.username = username
+    user.bio = bio
+    user.password = password
+
+    db.session.commit()
+
+    return dict(status='ok')
