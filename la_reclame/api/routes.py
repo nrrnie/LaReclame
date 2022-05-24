@@ -7,6 +7,7 @@ from la_reclame import db
 from utils import picturesDB, send_email, PriceTypes
 from urllib.parse import quote
 from os import getenv
+import base64
 
 url_serializer = URLSafeTimedSerializer(getenv('SECRET_KEY'))
 
@@ -59,8 +60,25 @@ def register():
 
 @api.route('/items', methods=['POST'])
 def get_items():
-    items = [item.serialize() for item in Items.query.all()]
-    return dict(status='ok', items=items)
+    user_id = request.form.get('user_id', '')
+    if user_id != '':
+        items_list = Items.query.filter_by(user_id=user_id)
+    else:
+        items_list = Items.query
+
+    search = request.form.get('search', '')
+    if search != '':
+        title_like = Items.title.like("%{}%".format(search))
+        description_like = Items.description.like("%{}%".format(search))
+        items_list = items_list.filter(title_like | description_like)
+
+    filter_by = request.form.get('filter_by', '')
+    if filter_by != '':
+        items_list = items_list.filter_by(category_id=filter_by)
+
+    items_list = items_list.order_by(Items.id.desc()).all()
+
+    return dict(status='ok', items=[item.serialize() for item in items_list])
 
 
 @api.route('/add/item', methods=['POST'])
@@ -75,7 +93,7 @@ def add_item():
     if None in [user_id, title, description, category_id, price_type] or price_type == 'fixed' and price is None:
         return dict(status='error', error='Not all data was given.')
 
-    price = int(price) if price is not None else None
+    price = int(price) if price is not None else 0
 
     if Users.query.get(user_id) is None:
         return dict(status='error', error='User with such id not found.')
@@ -111,6 +129,15 @@ def update_profile_picture():
     return dict(status='ok')
 
 
+@api.route('/get-image', methods=['POST'])
+def get_item_image():
+    table = request.form.get('table')
+    filename = request.form.get('filename')
+    path = picturesDB.get_picture_path(table, filename)
+    image_base64 = base64.b64encode(open(path, 'rb').read())
+    return dict(status='ok', image=quote(image_base64, safe=''))
+
+
 @api.route('/categories', methods=['POST'])
 def get_categories():
     categories = [category.serialize() for category in Categories.query.order_by(Categories.id.asc()).all()]
@@ -121,3 +148,33 @@ def get_categories():
 def item_reviews(item_id: int):
     reviews = [review.serialize() for review in Reviews.query.filter_by(item_id=item_id).all()]
     return dict(status='ok', reviews=reviews)
+
+@api.route('/update-user-info', methods=['POST'])
+def update_user_info():
+    user_id = request.form.get('user_id')
+    username = request.form.get('username')
+    bio = request.form.get('bio')
+    password = request.form.get('password')
+
+    if user_id is None:
+        return dict(status='error', error='Not all data was given.')
+
+    user = Users.query.get(user_id)
+
+    if user is None:
+        return dict(status='error', error='User with such id not found.')
+
+    username = user.username if username in [None, ''] else username
+    bio = user.bio if bio in [None, ''] else bio
+    password = user.password if password in [None, ''] else sha256_crypt.hash(password)
+
+    if username != user.username and Users.query.filter_by(username=username).first() is not None:
+        return dict(status='error', error='%s already taken!' % username)
+
+    user.username = username
+    user.bio = bio
+    user.password = password
+
+    db.session.commit()
+
+    return dict(status='ok')

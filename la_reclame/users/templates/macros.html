@@ -1,14 +1,31 @@
 {% macro item_card(item) %}
-<div class="card">
+<div class="card mb-5">
     <div class="card-body">
-        <h5 class="d-flex align-items-center mb-3">{{ item['title'] }}</h5>
+        <a class="d-flex align-items-center text-dark text-decoration-none mb-3 fs-5" href="{{ url_for('items.item_page', item_id=item.id) }}">{{ item['title'] }}</a>
         <hr class="my-3">
         <div class="row">
             <div class="col-md-4">
-                <img src="static/images/user-profile.jpg" alt="item-image" class="item-image" width="200">
+                {% if item.main_picture %}
+                <img src="{{ url_for('utils.get_picture', table='item-pictures', filename=item.main_picture) }}"
+                     class="img-fluid rounded-start w-50">
+                {% else %}
+                <img src="/static/images/no-image.jpg" class="img-fluid rounded-start w-50">
+                {% endif %}
             </div>
             <div class="col-md-8">
-                <p class="description">{{ item['body'] }}</p>
+                <p class="description mb-5">{{ cut_description(item.description, 100) }}</p>
+                <div class="d-flex justify-content-evenly">
+                    <p class="d-inline">Published: {{ item.created }}</p>
+                    {% set item_user = get_user_by_id(item.user_id) %}
+                    <div class="mb-3">
+                        <p class="text-secondary d-inline">Cost:</p>
+                        {% if item.price_type.name == 'fixed' %}
+                        <p class="text-dark d-inline">{{ item.price }}</p>
+                        {% else %}
+                        <p class="text-dark d-inline text-capitalize">{{ item.price_type.name }}</p>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

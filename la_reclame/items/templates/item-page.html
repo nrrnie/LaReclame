@@ -13,11 +13,12 @@
             <div class="col-lg-8 mt-5">
                 <div class="card">
                     <div class="card-body">
-                        {% if item.pictures %}
+                        {% if item.all_pictures %}
                         <div class="d-flex justify-content-center">
-                            <div id="carouselExampleControls" class="carousel slide w-75 d-flex justify-content-center" data-bs-ride="carousel">
+                            <div id="carouselExampleControls" class="carousel slide w-75 d-flex justify-content-center"
+                                 data-bs-ride="carousel">
                                 <div class="carousel-inner w-75">
-                                    {% for picture in item.pictures %}
+                                    {% for picture in item.all_pictures %}
                                     <div class="carousel-item">
                                         <img src="{{ url_for('utils.get_picture', table='item-pictures', filename=picture) }}"
                                              class="d-block w-100"   alt="...">
@@ -115,6 +116,25 @@
                                     </div>
                                 </div>
                             {% endfor %}
+                            <div class="item-cost-block">
+                                <p class="text-secondary item-cost d-inline">Cost:</p>
+                                {% if item.price_type.name == 'fixed' %}
+                                <p class="text-dark d-inline">{{ item.price }}</p>
+                                {% else %}
+                                <p class="text-dark d-inline text-capitalize">{{ item.price_type.name }}</p>
+                                {% endif %}
+                                <p class="d-inline"></p>
+                            </div>
+                            <div class="item-date-block"><p class="text-secondary item-date d-inline">Date:
+                                <p class="d-inline">{{ item.created }}</p></p></div>
+
+                            {% set item_user = get_user_by_id(item.user_id) %}
+
+                            <p class="text-end text-secondary item-author">
+                                Seller: <a href="{{ url_for('users.profile', username=item_user.username) }}"
+                                           class="text-primary text-decoration-none"
+                                           role="button">{{ item_user.username }}</a>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -124,8 +144,13 @@
                     <div class="card mb-5">
                         <div class="card-body">
                             <div class="author-box d-flex justify-content w-100">
+                                {% if user.picture %}
                                 <img src="{{ url_for('utils.get_picture', table='profile-pictures', filename=user.picture) }}"
-                                     class="rounded-circle w-25 h-25">
+                                     alt="Admin" class="p-1"
+                                     width="150">
+                                {% else %}
+                                <img src="/static/images/no-image.jpg" class="p-1" width="150">
+                                {% endif %}
                                 <div class="author-info w-100 ps-5">
                                     <h3 class="text-start"><a href="#" class="text-decoration-none text-dark">{{
                                         user.username }}</a></h3>
