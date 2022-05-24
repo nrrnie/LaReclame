@@ -26,6 +26,7 @@ class Users(db.Model):
 class Items(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False, index=True)
+    category_id = db.Column(db.Integer, index=True)
     created = db.Column(db.DATETIME, nullable=False, default=datetime.now)
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=False)
@@ -34,7 +35,6 @@ class Items(db.Model):
     price = db.Column(db.Integer, index=True)
     pictures = db.Column(db.Text)
     main_picture = db.Column(db.String(255))
-    category_id = db.Column(db.Integer, index=True)
 
     def serialize(self):
         return {
@@ -45,6 +45,8 @@ class Items(db.Model):
             'title': self.title,
             'description': self.description,
             'is_active': self.is_active,
+            'price_type': self.price_type,
+            'price': self.price,
             'pictures': self.pictures,
             'main_picture': self.main_picture,
         }
