@@ -45,7 +45,7 @@ class Items(db.Model):
             'title': self.title,
             'description': self.description,
             'is_active': self.is_active,
-            'price_type': self.price_type,
+            'price_type': self.price_type.name,
             'price': self.price,
             'pictures': self.pictures,
             'main_picture': self.main_picture,
