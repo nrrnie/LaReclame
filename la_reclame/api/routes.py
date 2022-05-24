@@ -60,13 +60,17 @@ def register():
 
 @api.route('/items', methods=['POST'])
 def get_items():
+    user_id = request.form.get('user_id', '')
+    if user_id != '':
+        items_list = Items.query.filter_by(user_id=user_id)
+    else:
+        items_list = Items.query
+
     search = request.form.get('search', '')
     if search != '':
         title_like = Items.title.like("%{}%".format(search))
         description_like = Items.description.like("%{}%".format(search))
-        items_list = Items.query.filter(title_like | description_like)
-    else:
-        items_list = Items.query
+        items_list = items_list.filter(title_like | description_like)
 
     filter_by = request.form.get('filter_by', '')
     if filter_by != '':
