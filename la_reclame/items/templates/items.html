@@ -10,35 +10,35 @@
 <div class="container">
     <h3 class="text-center my-3">Categories</h3>
     <div class="row d-flex justify-content-between">
-        <div class="col-sm-1">
+        <a role="button" class="col-sm-1 text-decoration-none" href="{{ url_for('items.items_home', filter_by=1) }}">
             <div class="bg-primary rounded-circle p-1"><img src="static/images/house.png" class="p-2 img-fluid"></div>
-            <p class="text-center pt-2">Housing</p>
-        </div>
-        <div class="col-sm-1">
+            <p class="text-center text-dark pt-2">Housing</p>
+        </a>
+        <a role="button" class="col-sm-1 text-decoration-none" href="{{ url_for('items.items_home', filter_by=2) }}">
             <div class="bg-primary rounded-circle p-1"><img src="static/images/buy1.png" class="p-2 img-fluid">
             </div>
-            <p class="text-center pt-2">Buy/Sale</p>
-        </div>
-        <div class="col-sm-1">
+            <p class="text-center text-dark pt-2">Buy/Sale</p>
+        </a>
+        <a role="button" class="col-sm-1 text-decoration-none" href="{{ url_for('items.items_home', filter_by=3) }}">
             <div class="bg-primary rounded-circle p-1"><img src="static/images/search.png" class="p-2 img-fluid">
             </div>
-            <p class="text-center pt-2">Lost-and-Found</p>
-        </div>
-        <div class="col-sm-1">
+            <p class="text-center text-dark pt-2">Lost-and-Found</p>
+        </a>
+        <a role="button" class="col-sm-1 text-decoration-none" href="{{ url_for('items.items_home', filter_by=4) }}">
             <div class="bg-primary rounded-circle p-1"><img src="static/images/project.png" class="p-2 img-fluid">
             </div>
-            <p class="text-center pt-2">Project</p>
-        </div>
-        <div class="col-sm-1">
+            <p class="text-center text-dark pt-2">Project</p>
+        </a>
+        <a role="button" class="col-sm-1 text-decoration-none" href="{{ url_for('items.items_home', filter_by=5) }}">
             <div class="bg-primary rounded-circle p-1"><img src="static/images/tutor.png" class="p-2 img-fluid">
             </div>
-            <p class="text-center pt-2">Services</p>
-        </div>
-        <div class="col-sm-1">
+            <p class="text-center text-dark pt-2">Services</p>
+        </a>
+        <a role="button" class="col-sm-1 text-decoration-none" href="{{ url_for('items.items_home', filter_by=6) }}">
             <div class="bg-primary rounded-circle p-1"><img src="static/images/other.png" class="p-2 img-fluid">
             </div>
-            <p class="text-center pt-2">Other</p>
-        </div>
+            <p class="text-center text-dark pt-2">Other</p>
+        </a>
     </div>
 </div>
 
@@ -46,7 +46,7 @@
 
 <div class="container mt-5">
     {% if items|length == 0 %}
-        <h2 class="text-center">There are no items yet.</h2>
+    <h2 class="text-center">There are no items yet.</h2>
     {% endif %}
     {% for item in items %}
     <div class="card mb-5">
@@ -56,18 +56,28 @@
                 <img src="{{ url_for('utils.get_picture', table='item-pictures', filename=item.main_picture) }}"
                      class="img-fluid rounded-start">
                 {% else %}
-                <img src="static/images/no-product-image.jpg" class="img-fluid rounded-start">
+                <img src="/static/images/no-image.jpg" class="img-fluid rounded-start">
                 {% endif %}
             </div>
             <div class="col-sm-8 px-3 pt-3">
                 <a role="button" href="{{ url_for('items.item_page', item_id=item.id) }}"
                    class="card-title fs-4 text-decoration-none text-dark">{{ item.title }}</a>
-                <p class="card-body text-secondary ps-0">{{ item.description }}</p>
+                <p class="card-body text-secondary ps-0">{{ cut_description(item.description, 255) }}</p>
                 <div class="d-flex justify-content-evenly align-items-end">
                     <p class="d-inline">Published: {{ item.created }}</p>
                     {% set item_user = get_user_by_id(item.user_id) %}
-                    <p class="text-end text-secondary">Seller: <a href="{{ url_for('users.profile', username=item_user.username) }}" class="text-primary text-decoration-none">{{
+                    <p class="text-secondary">Seller: <a
+                            href="{{ url_for('users.profile', username=item_user.username) }}"
+                            class="text-primary text-decoration-none">{{
                         item_user.username }}</a>
+                    <div class="mb-3">
+                        <p class="text-secondary d-inline">Cost:</p>
+                        {% if item.price_type.name == 'fixed' %}
+                        <p class="text-dark d-inline">{{ item.price }}</p>
+                        {% else %}
+                        <p class="text-dark d-inline text-capitalize">{{ item.price_type.name }}</p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

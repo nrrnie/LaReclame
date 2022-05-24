@@ -9,7 +9,21 @@ from utils import auth_required, picturesDB
 @items.route('/')
 @auth_required
 def items_home():
-    return render_template('items.html', user=session['user'], items=Items.query.all())
+    search = request.values.get('search', '')
+    if search != '':
+        title_like = Items.title.like("%{}%".format(search))
+        description_like = Items.description.like("%{}%".format(search))
+        items_list = Items.query.filter(title_like | description_like)
+    else:
+        items_list = Items.query
+
+    filter_by = request.values.get('filter_by', '')
+    if filter_by != '':
+        items_list = items_list.filter_by(category_id=filter_by).all()
+    else:
+        items_list = items_list.all()
+
+    return render_template('items.html', user=session['user'], items=items_list, filter_by=filter_by, search=search)
 
 
 @items.route('/<item_id>')
@@ -21,9 +35,11 @@ def item_page(item_id: int):
 
     pictures = [item.main_picture] if item.main_picture else []
     pictures.extend(item.pictures.split(',') if item.pictures else [])
-    item.pictures = pictures
+    item.all_pictures = pictures
 
-    return render_template('item-page.html', user=session['user'], item=item, reviews=Reviews.query.filter_by(item_id=item_id))
+    user = Users.query.get(item.user_id)
+
+    return render_template('item-page.html', user=user, item=item, reviews=Reviews.query.filter_by(item_id=item_id))
 
 
 @items.route('/add-item', methods=['GET', 'POST'])
@@ -49,6 +65,9 @@ def add_item():
     price = request.form.get('item-price', None)
     if price_type == PriceTypes.fixed and price is None:
         flash('At fixed price type you must fill price as well', 'danger')
+        return render_template('add-item.html', user=session['user'], categories=categories)
+    elif price_type == PriceTypes.fixed and price is not None and int(price) < 1:
+        flash('You should write appropriate price for the item', 'danger')
         return render_template('add-item.html', user=session['user'], categories=categories)
 
     item = Items(user_id=session['user'].id, title=title, description=description,

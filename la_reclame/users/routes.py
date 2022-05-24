@@ -1,7 +1,7 @@
 from flask import render_template, request, session
 from flask import flash
 from la_reclame.users import users
-from la_reclame.models import Users
+from la_reclame.models import Users, Items
 from utils import auth_required, picturesDB
 from la_reclame import db
 
@@ -14,7 +14,9 @@ def profile(username: str):
     if user is None:
         return '404\nUser not found'
 
-    return render_template('profile.html', user=user)
+    items = Items.query.filter_by(user_id=user.id).all()
+
+    return render_template('profile.html', user=user, items=items)
 
 
 @users.route('/settings', methods=['GET', 'POST'])
