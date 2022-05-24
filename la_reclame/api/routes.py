@@ -74,9 +74,9 @@ def get_items():
 
     filter_by = request.form.get('filter_by', '')
     if filter_by != '':
-        items_list = items_list.filter_by(category_id=filter_by).all()
-    else:
-        items_list = items_list.all()
+        items_list = items_list.filter_by(category_id=filter_by)
+
+    items_list = items_list.order_by(Items.id.desc()).all()
 
     return dict(status='ok', items=[item.serialize() for item in items_list])
 
