@@ -160,6 +160,9 @@ def update_user_info():
     bio = user.bio if bio in [None, ''] else bio
     password = user.password if password in [None, ''] else sha256_crypt.hash(password)
 
+    if username != user.username and Users.query.filter_by(username=username).first() is not None:
+        return dict(status='error', error='%s already taken!' % username)
+
     user.username = username
     user.bio = bio
     user.password = password
