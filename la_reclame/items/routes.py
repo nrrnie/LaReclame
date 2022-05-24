@@ -65,7 +65,7 @@ def add_item():
 @auth_required
 def add_review(item_id: int):
 
-    username = session['user'].username
+    user_id = session['user'].id
     title = request.form.get('title')
     description = request.form.get('description')
     rating = request.form.get('rating')
@@ -76,7 +76,7 @@ def add_review(item_id: int):
     if Items.query.get(item_id) is None:
         flash('Item with such ID was not found!', 'danger')
 
-    review = Reviews(item_id=item_id, username=username, title=title, description=description, rating=rating)
+    review = Reviews(item_id=item_id, user_id=user_id, title=title, description=description, rating=rating)
 
     db.session.add(review)
     db.session.commit()

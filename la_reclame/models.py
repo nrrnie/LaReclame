@@ -63,7 +63,7 @@ class Categories(db.Model):
 class Reviews(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     item_id = db.Column(db.Integer, nullable=False)
-    username = db.Column(db.String(255), nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
@@ -73,7 +73,7 @@ class Reviews(db.Model):
         return {
             'id': self.id,
             'item_id': self.item_id,
-            'username': self.username,
+            'user_id': self.user_id,
             'title': self.title,
             'description': self.description,
             'rating': self.rating,
