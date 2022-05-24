@@ -6,6 +6,7 @@ from utils import PriceTypes
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), nullable=False, unique=True)
+    bio = db.Column(db.Text, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     registered = db.Column(db.DATETIME, nullable=False, default=datetime.now)
@@ -16,10 +17,12 @@ class Users(db.Model):
         return {
             'id': self.id,
             'username': self.username,
+            'bio': self.bio,
             'password': self.password,
             'email': self.email,
             'registered': str(self.registered),
-            'picture': self.picture,
+            'is_active': self.is_active,
+            'picture': self.picture
         }
 
 
